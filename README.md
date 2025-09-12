@@ -1,1 +1,1 @@
-"Дизайн сетей ЦОД" - otus-network-engineer
+"Дизайн сетей ЦОД" - otus-network-engineer.
