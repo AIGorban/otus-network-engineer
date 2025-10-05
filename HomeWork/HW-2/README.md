@@ -7,7 +7,7 @@
 2. Зафиксировать в документации - план работы, адресное пространство, схему сети, конфигурацию устройств.
 3. Убедиться в наличии IP связанности между устройствами в OSFP домене.
 
-1. Адресное пространство. 
+**1. Адресное пространство.** 
 
 |      Spine1           |     Spine2            |         Leaf1         |       Leaf2           |     Leaf3             |
 |-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
@@ -21,9 +21,44 @@
 |                       | e0/0 10.10.5.10/24    |  e0/0 10.10.6.10/24   | e0/0 10.10.7.10/24    |  e0/0 10.10.8.10/24   |
 |                       | GW 10.10.5.1          | GW 10.10.6.1          | GW 10.10.7.1          | GW 10.10.8.1          | 
 
-2. Схема сети
+**2. Схема сети.**
 
-[](Scheme\eve-ng_pic2.png)
+![](Scheme\eve-ng_pic2.png)
 
 
+**3. Конфигурация оборудования.**
 
+Spine_1 - [Здесь](Configs/Spine_1_conf.txt)
+
+Spine_2 - [Здесь](Configs/Spine_2_conf.txt)
+
+Leaf_2 -  [Здесь](Configs/Leaf_2_conf.txt)
+
+**4. Проверка связанности между сегментами сети.** 
+
+   *a. Проверяем доступность пакетами ICMP c Сlient_1 до Client_2, Client_3, Client_4*
+
+![](CommandResults/eve-ng_pic3.png)
+ 
+   *b. Проверяем соседство OSPF*
+
+Spine_1
+![](CommandResults/eve-ng_pic4.png) 
+
+Spine_2
+![](CommandResults/eve-ng_pic5.png) 
+
+   *c. Проверяем маршруты.*
+
+Spine_1
+![](CommandResults/eve-ng_pic6.png) 
+
+Spine_2
+![](CommandResults/eve-ng_pic7.png) 
+
+   *d. Проверяем на Leaf_2 OSPF DataBase.*
+
+Leaf_2
+![](CommandResults/eve-ng_pic8.png) 
+
+    
