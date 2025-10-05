@@ -1,0 +1,72 @@
+!Command: show running-config
+!Time: Sun Oct  5 13:58:59 2025
+
+version 7.0(3)I7(4)
+hostname Spine_2
+vdc Spine_2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature ospf
+feature interface-vlan
+
+no password strength-check
+username admin password 5 $5$FI03x2.4$d38Iaz1IJUWs99e44UtzdIKEGM3nE7RzLD9WKB7L6EA  role network-admin
+ip domain-lookup
+copp profile strict
+snmp-server user admin network-admin auth md5 0xf707ee4f38c933ba7fae6b493ca073a4 priv 0xf707ee4f38c933ba7fae6b493ca073a4 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context management
+
+interface Vlan1
+
+interface Ethernet1/1
+  description ++ To Leaf_1 ++
+  no switchport
+  ip address 10.10.2.1/30
+  no ip ospf passive-interface
+  ip router ospf 10 area 0.0.0.0
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Leaf_2 ++
+  no switchport
+  ip address 10.10.2.5/30
+  no ip ospf passive-interface
+  ip router ospf 10 area 0.0.0.2
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Leaf_3 ++
+  no switchport
+  ip address 10.10.2.9/30
+  no ip ospf passive-interface
+  ip router ospf 10 area 0.0.0.0
+  no shutdown
+
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router ospf 10
+  router-id 10.10.2.1
+
+no logging console
+
+Spine_2#
