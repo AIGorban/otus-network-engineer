@@ -42,23 +42,23 @@ Leaf_2 -  [Здесь](Configs/Leaf_2_conf.txt)
  
    *b. Проверяем соседство OSPF*
 
-Spine_1
+Spine_1  
 ![](CommandResults/eve-ng_pic4.png) 
 
-Spine_2
+Spine_2  
 ![](CommandResults/eve-ng_pic5.png) 
 
    *c. Проверяем маршруты.*
 
-Spine_1
+Spine_1  
 ![](CommandResults/eve-ng_pic6.png) 
 
-Spine_2
+Spine_2  
 ![](CommandResults/eve-ng_pic7.png) 
 
    *d. Проверяем на Leaf_2 OSPF DataBase.*
 
-Leaf_2
+Leaf_2  
 ![](CommandResults/eve-ng_pic8.png) 
 
     
