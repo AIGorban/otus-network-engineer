@@ -43,18 +43,20 @@ Leaf_3 -  [Здесь](Configs/Leaf3.txt)
  
    *b. Проверяем соседство ISIS*
 
-**Spine_1** 
-Show ISIS Database 
+**Spine_1**
+
+Show ISIS Database          
 ![](CommandResults/EVE-NG_Pic3.png) 
 
-Show ISIS adjacency
+Show ISIS adjacency          
 ![](CommandResults/EVE-NG_Pic5.png)
 
 **Spine_2**
-Show ISIS Database  
+
+Show ISIS Database            
 ![](CommandResults/EVE-NG_Pic4.png) 
 
-Show ISIS adjacency
+Show ISIS adjacency          
 ![](CommandResults/EVE-NG_Pic6.png)
 
 
