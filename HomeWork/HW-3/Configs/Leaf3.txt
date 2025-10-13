@@ -1,11 +1,10 @@
 
-
 !Command: show running-config
-!Time: Sat Oct  4 19:53:35 2025
+!Time: Mon Oct 13 18:26:49 2025
 
 version 7.0(3)I7(4)
-hostname Leaf_3
-vdc Leaf_3 id 1
+hostname Leaf3
+vdc Leaf3 id 1
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 511
@@ -14,14 +13,16 @@ vdc Leaf_3 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
-feature ospf
-feature interface-vlan
+feature isis
+feature bfd
 
 no password strength-check
-username admin password 5 $5$rzkGk/qi$t.nGL4Vs2TRVc7Vbf7SUl9pEgOZKzXY2qi9tixAiWP9  role network-admin
+username admin password 5 $5$RshmfL6N$wo5wKBPrNy9lI82ctWe7JZQnLtZmUT0aMnW2Axut6U
+D  role network-admin
 ip domain-lookup
 copp profile strict
-snmp-server user admin network-admin auth md5 0xfef0b5a271d07de40028939631c9e427 priv 0xfef0b5a271d07de40028939631c9e427 localizedkey
+snmp-server user admin network-admin auth md5 0xfef0b5a271d07de40028939631c9e427
+ priv 0xfef0b5a271d07de40028939631c9e427 localizedkey
 rmon event 1 description FATAL(1) owner PMON@FATAL
 rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
 rmon event 3 description ERROR(3) owner PMON@ERROR
@@ -32,38 +33,47 @@ vlan 1
 
 vrf context management
 
-interface Vlan1
-
 interface Ethernet1/1
-  description ++ To Spine_1 ++
+  description ++ To Spine2 ++
   no switchport
+  mtu 8000
+  no ip redirects
   ip address 10.10.1.10/30
-  no ip ospf passive-interface
-  ip router ospf 10 area 0.0.0.0
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis 10
+  no isis passive-interface level-1
   no shutdown
 
 interface Ethernet1/2
-  description ++ To Spine_2 ++
+  description ++ To Spine2 ++
   no switchport
+  mtu 8000
   ip address 10.10.2.10/30
-  no ip ospf passive-interface
-  ip router ospf 10 area 0.0.0.0
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis 10
+  no isis passive-interface level-1
   no shutdown
 
 interface Ethernet1/3
-  description ++ To Client_3 ++
+  description ++ To Client3 ++
   no switchport
   ip address 10.10.7.1/24
-  no ip ospf passive-interface
-  ip router ospf 10 area 0.0.0.0
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis 10
+  no isis passive-interface level-1
   no shutdown
 
 interface Ethernet1/4
-  description ++ To Client_4 ++
+  description ++ To Client4 ++
   no switchport
   ip address 10.10.8.1/24
-  no ip ospf passive-interface
-  ip router ospf 10 area 0.0.0.0
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis 10
+  no isis passive-interface level-1
   no shutdown
 
 
@@ -71,13 +81,13 @@ interface mgmt0
   vrf member management
 line console
 line vty
-boot nxos bootflash:/nxos.7.0.3.I7.4.bin 
-router ospf 10
-  router-id 10.10.7.1
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router isis 10
+  net 49.0001.0000.0005.00
+  is-type level-1
+  address-family ipv4 unicast
+  passive-interface default level-1
 
 
-!
 
-
-!end
-!end
+Leaf3#
