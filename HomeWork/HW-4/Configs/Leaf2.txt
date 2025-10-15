@@ -1,0 +1,79 @@
+!Command: show running-config
+!Time: Wed Oct 15 07:33:27 2025
+
+version 7.0(3)I7(4)
+hostname Leaf2
+vdc Leaf2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature bgp
+feature pim
+feature isis
+feature bfd
+
+no password strength-check
+username admin password 5 $5$wWQg8ph3$EkD3IIysDQF4cYZtSWeb23mmfIuBhLfAj7GVwYr92N
+1  role network-admin
+ip domain-lookup
+snmp-server user admin network-admin auth md5 0xf3d8af550d6341645e39f7f903c7ea1d
+ priv 0xf3d8af550d6341645e39f7f903c7ea1d localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context management
+
+interface Ethernet1/1
+  description ++ To Spine1 ++
+  no switchport
+  no ip redirects
+  ip address 10.10.1.6/30
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Spine2 ++
+  no switchport
+  ip address 10.10.2.6/30
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Client2 ++
+  no switchport
+  ip address 10.10.6.1/24
+  no shutdown
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.10.10.2/32
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router bgp 65002
+  router-id 10.10.10.2
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.10.6.0/24
+    network 10.10.10.2/32
+    maximum-paths 10
+  neighbor 10.10.1.5
+    bfd
+    remote-as 65010
+    address-family ipv4 unicast
+  neighbor 10.10.2.5
+    bfd
+    remote-as 65010
+    address-family ipv4 unicast
+
+
