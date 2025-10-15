@@ -54,18 +54,19 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
 
 ![](CommandResults/Pic1.png)
  
-    *b. Проверяем соседство eBGP*
+*b. Проверяем соседство eBGP*
     
-    **Spine_1**
+**Spine_1**
     
-    Show ip bgp summury                  
+    Show ip bgp summury      
 
-! [](CommandResults/Pic2.png)
+![](CommandResults/Pic2.png)
     
     Show ip bgp              
 ![](CommandResults/Pic4.png)
     
-    **Spine_2**
+
+**Spine_2**
     
     Show ip bgp summury            
 ![](CommandResults/Pic3.png) 
@@ -76,10 +77,10 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
     
        *c. Проверяем маршруты.*
     
-    Spine_1              
+**Spine_1**              
 ![](CommandResults/Pic6.png) 
     
-    Spine_2                  
+**Spine_2**                  
 ![](CommandResults/Pic7.png) 
     
     К сожалению, в очередной раз, не отработал протокол BFD, по всей видимости какието ограничения на виртуализации. 
