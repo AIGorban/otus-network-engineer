@@ -1,4 +1,4 @@
-Курс "Дизайн сетей ЦОД" - OTUS.ru
+                                                              Курс "Дизайн сетей ЦОД" - OTUS.ru
 
 
                                              Домашнее задание
@@ -76,4 +76,14 @@ VPC1> ping 192.168.100.4
             84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms  
             84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms
 
- 
+   *b. Проверяем маршруты UNDERLAY.*
+    
+**Spine1**              
+![](CommandResults) 
+    
+**Spine2**                  
+![](CommandResults/Pic7.png) 
+
+**Leaf1** 
+
+**Leaf3** 
