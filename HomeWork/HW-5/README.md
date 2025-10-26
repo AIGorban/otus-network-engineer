@@ -108,3 +108,31 @@ VPC3> ping 192.168.100.10
 
 **Leaf3**   
 ![](CommandResults/Pic5.png)   
+
+  *b. Проверяем OVERRLAY.*
+
+**Spine1**                
+![](CommandResults/Pic8.png)
+
+![](CommandResults/Pic10.png)
+    
+**Spine2**                    
+![](CommandResults/Pic9.png)
+
+![](CommandResults/Pic11.png)
+
+**Leaf1**   
+![](CommandResults/Pic6.png)
+
+![](CommandResults/Pic12.png)
+
+**Leaf3**   
+![](CommandResults/Pic7.png)
+
+![](CommandResults/Pic13.png)
+
+
+
+
+
+
