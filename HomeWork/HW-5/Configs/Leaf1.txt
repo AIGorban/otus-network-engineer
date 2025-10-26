@@ -1,0 +1,79 @@
+nv overlay evpn
+feature ospf
+feature bgp
+feature pim
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature bfd
+feature nv overlay
+
+vlan 1,11
+vlan 11
+  name VPC_VLAN
+  vn-segment 10011
+
+vrf context management
+
+interface Vlan1
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  source-interface loopback0
+  member vni 10011
+    ingress-replication protocol bgp
+
+interface Ethernet1/1
+  description ++ To Spine1 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.1.2/30
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Spine2 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.2.2/30
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Client1 ++
+  switchport access vlan 11
+
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.10.10.1/32
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router bgp 65001
+  router-id 10.10.10.1
+  timers bgp 3 9
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.10.10.1/32
+    maximum-paths 10
+  template peer SPINE
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+  neighbor 10.10.1.1
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  neighbor 10.10.2.1
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+evpn
+  vni 10011 l2
+    rd auto
+    route-target import 10011:11
+    route-target export 10011:11
