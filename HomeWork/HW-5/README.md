@@ -53,26 +53,26 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
 
 VPC1> ping 192.168.100.2
 
-84 bytes from 192.168.100.2 icmp_seq=1 ttl=64 time=13.166 ms
-84 bytes from 192.168.100.2 icmp_seq=2 ttl=64 time=11.654 ms
-84 bytes from 192.168.100.2 icmp_seq=3 ttl=64 time=16.618 ms
-84 bytes from 192.168.100.2 icmp_seq=4 ttl=64 time=11.418 ms
-84 bytes from 192.168.100.2 icmp_seq=5 ttl=64 time=11.186 ms
+  84 bytes from 192.168.100.2 icmp_seq=1 ttl=64 time=13.166 ms  
+  84 bytes from 192.168.100.2 icmp_seq=2 ttl=64 time=11.654 ms  
+  84 bytes from 192.168.100.2 icmp_seq=3 ttl=64 time=16.618 ms  
+  84 bytes from 192.168.100.2 icmp_seq=4 ttl=64 time=11.418 ms  
+  84 bytes from 192.168.100.2 icmp_seq=5 ttl=64 time=11.186 ms  
 
 VPC1> ping 192.168.100.3
 
-84 bytes from 192.168.100.3 icmp_seq=1 ttl=64 time=13.070 ms
-84 bytes from 192.168.100.3 icmp_seq=2 ttl=64 time=12.740 ms
-84 bytes from 192.168.100.3 icmp_seq=3 ttl=64 time=14.562 ms
-84 bytes from 192.168.100.3 icmp_seq=4 ttl=64 time=13.092 ms
-84 bytes from 192.168.100.3 icmp_seq=5 ttl=64 time=15.021 ms
+  84 bytes from 192.168.100.3 icmp_seq=1 ttl=64 time=13.070 ms  
+  84 bytes from 192.168.100.3 icmp_seq=2 ttl=64 time=12.740 ms  
+  84 bytes from 192.168.100.3 icmp_seq=3 ttl=64 time=14.562 ms  
+  84 bytes from 192.168.100.3 icmp_seq=4 ttl=64 time=13.092 ms  
+  84 bytes from 192.168.100.3 icmp_seq=5 ttl=64 time=15.021 ms  
 
 VPC1> ping 192.168.100.4
 
-84 bytes from 192.168.100.4 icmp_seq=1 ttl=64 time=10.467 ms
-84 bytes from 192.168.100.4 icmp_seq=2 ttl=64 time=14.554 ms
-84 bytes from 192.168.100.4 icmp_seq=3 ttl=64 time=13.592 ms
-84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms
-84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms
+84 bytes from 192.168.100.4 icmp_seq=1 ttl=64 time=10.467 ms  
+84 bytes from 192.168.100.4 icmp_seq=2 ttl=64 time=14.554 ms  
+84 bytes from 192.168.100.4 icmp_seq=3 ttl=64 time=13.592 ms  
+84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms  
+84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms  
 
  
