@@ -79,11 +79,13 @@ VPC1> ping 192.168.100.4
    *b. Проверяем маршруты UNDERLAY.*
     
 **Spine1**              
-![](CommandResults) 
+![](CommandResults/Pic2.png) 
     
 **Spine2**                  
-![](CommandResults/Pic7.png) 
+![](CommandResults/Pic3.png) 
 
 **Leaf1** 
+![](CommandResults/Pic4.png) 
 
 **Leaf3** 
+![](CommandResults/Pic5.png) 
