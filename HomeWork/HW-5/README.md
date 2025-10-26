@@ -47,9 +47,10 @@ Leaf2 -  [Здесь](Configs/Leaf2.txt)
 
 Leaf3 -  [Здесь](Configs/Leaf3.txt)
 
+
 **4. Проверка связанности между сегментами сети.** 
 
- *a. Проверяем доступность пакетами ICMP c Сlient_1 [192.168.100.1] до Client_2 [192.168.100.2], Client_3 [192.168.100.3], Client_4 [192.168.100.4]*
+*a. Проверяем доступность пакетами ICMP c Сlient_1 [192.168.100.1] до Client_2 [192.168.100.2], Client_3 [192.168.100.3], Client_4 [192.168.100.4]*
 
 VPC1> ping 192.168.100.2
 
@@ -69,10 +70,11 @@ VPC1> ping 192.168.100.3
 
 VPC1> ping 192.168.100.4
 
-84 bytes from 192.168.100.4 icmp_seq=1 ttl=64 time=10.467 ms  
-84 bytes from 192.168.100.4 icmp_seq=2 ttl=64 time=14.554 ms  
-84 bytes from 192.168.100.4 icmp_seq=3 ttl=64 time=13.592 ms  
-84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms  
-84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms  
+  84 bytes from 192.168.100.4 icmp_seq=1 ttl=64 time=10.467 ms  
+  84 bytes from 192.168.100.4 icmp_seq=2 ttl=64 time=14.554 ms  
+  84 bytes from 192.168.100.4 icmp_seq=3 ttl=64 time=13.592 ms  
+  84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms  
+  84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms 
+
 
  
