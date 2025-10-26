@@ -84,8 +84,8 @@ VPC1> ping 192.168.100.4
 **Spine2**                  
 ![](CommandResults/Pic3.png) 
 
-**Leaf1** 
-![](CommandResults/Pic4.png) 
+**Leaf1**   
+![](CommandResults/Pic4.png)   
 
-**Leaf3** 
-![](CommandResults/Pic5.png) 
+**Leaf3**   
+![](CommandResults/Pic5.png)   
