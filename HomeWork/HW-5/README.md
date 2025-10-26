@@ -76,6 +76,25 @@ VPC1> ping 192.168.100.4
             84 bytes from 192.168.100.4 icmp_seq=4 ttl=64 time=11.502 ms  
             84 bytes from 192.168.100.4 icmp_seq=5 ttl=64 time=12.269 ms
 
+Проверяем доступность поднятого SVI [192.168.100.10] на Leaf1.
+
+VPC1> ping 192.168.100.10
+
+            84 bytes from 192.168.100.10 icmp_seq=1 ttl=255 time=3.055 ms
+            84 bytes from 192.168.100.10 icmp_seq=2 ttl=255 time=3.822 ms
+            84 bytes from 192.168.100.10 icmp_seq=3 ttl=255 time=3.079 ms
+            84 bytes from 192.168.100.10 icmp_seq=4 ttl=255 time=3.533 ms
+            84 bytes from 192.168.100.10 icmp_seq=5 ttl=255 time=2.927 ms
+
+VPC3> ping 192.168.100.10
+
+            84 bytes from 192.168.100.10 icmp_seq=1 ttl=255 time=10.012 ms
+            84 bytes from 192.168.100.10 icmp_seq=2 ttl=255 time=10.199 ms
+            84 bytes from 192.168.100.10 icmp_seq=3 ttl=255 time=12.008 ms
+            84 bytes from 192.168.100.10 icmp_seq=4 ttl=255 time=9.391 ms
+            84 bytes from 192.168.100.10 icmp_seq=5 ttl=255 time=10.351 ms
+
+ 
    *b. Проверяем маршруты UNDERLAY.*
     
 **Spine1**              
