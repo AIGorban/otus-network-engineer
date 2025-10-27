@@ -2,7 +2,7 @@
 
 
                                              Домашнее задание
-*Цель:*                     Настроить eBGP для Underlay сети
+*Цель:* Настроить Overlay на основе VxLAN EVPN для L2 связанности между клиентами.         
 
 
 1. Настроить BGP peering между Leaf и Spine в AF l2vpn evpn.
