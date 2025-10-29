@@ -1,0 +1,117 @@
+nv overlay evpn
+feature ospf
+feature bgp
+feature pim
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature bfd
+feature nv overlay
+
+fabric forwarding anycast-gateway-mac 0005.0005.0005
+vlan 1,11,99
+vlan 11
+  name VPC_VLAN_11
+  vn-segment 10011
+vlan 99
+  name VxLAN_MAINSTREAM
+  vn-segment 9999
+
+vrf context VRF_MAIN
+  vni 9999
+  rd auto
+  address-family ipv4 unicast
+    route-target import 99:9999
+    route-target import 99:9999 evpn
+    route-target export 99:9999
+    route-target export 99:9999 evpn
+vrf context management
+
+interface Vlan1
+
+interface Vlan11
+  no shutdown
+  vrf member VRF_MAIN
+  no ip redirects
+  ip address 192.168.11.1/28
+  fabric forwarding mode anycast-gateway
+
+interface Vlan99
+  no shutdown
+  mtu 9216
+  vrf member VRF_MAIN
+  no ip redirects
+  ip forward
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  source-interface loopback0
+  member vni 9999 associate-vrf
+  member vni 10011
+    ingress-replication protocol bgp
+
+interface Ethernet1/1
+  description ++ To Spine1 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.1.2/30
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Spine2 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.2.2/30
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Client1 ++
+  switchport access vlan 11
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.10.10.1/32
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router bgp 65001
+  router-id 10.10.10.1
+  timers bgp 3 9
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.10.10.1/32
+    maximum-paths 10
+  template peer SPINE
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+  neighbor 10.10.1.1
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  neighbor 10.10.2.1
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  vrf VRF_MAIN
+    address-family ipv4 unicast
+      advertise l2vpn evpn
+      maximum-paths 10
+evpn
+  vni 10011 l2
+    rd auto
+    route-target import 11:10011
+    route-target export 11:10011
+  vni 10012 l2
+    rd auto
+    route-target import 12:10012
+    route-target export 12:10012
+  vni 10013 l2
+    rd auto
+    route-target import 13:10013
+    route-target export 13:10013
