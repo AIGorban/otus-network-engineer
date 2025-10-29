@@ -128,14 +128,18 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
  **4. Проверка на Leaf маршрутов VRF, L2VPN, L3VPN, MAC адресов**  
 
  **Leaf1** 
- ![](CommandResults/Pic1.png)
- ![](CommandResults/Pic2.txt)
- ![](CommandResults/Pic3.png) 
+ ![](CommandResults/Pic1.png)  
+ 
+
+ ![](CommandResults/Pic3.png)   
+ 
  **Leaf2**  
- ![](CommandResults/Pic4.png)
- ![](CommandResults/Pic5.txt)
- ![](CommandResults/Pic6.png)  
+ ![](CommandResults/Pic4.png)  
+
+
+ ![](CommandResults/Pic6.png)    
+ 
  **Leaf1**  
- ![](CommandResults/Pic7.png)
- ![](CommandResults/Pic8.txt)
- ![](CommandResults/Pic9.png)
+ ![](CommandResults/Pic7.png)  
+   
+ ![](CommandResults/Pic9.png)  
