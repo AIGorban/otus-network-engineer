@@ -131,6 +131,8 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
  ![](CommandResults/Pic1.png)    
 
 
+Файл - Leaf1 -  [Здесь](CommandResults/Pic2.txt)
+
                              Leaf1# sho bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
 BGP table version is 4358, Local Router ID is 10.10.10.1
@@ -225,7 +227,7 @@ Route Distinguisher: 10.10.10.1:4    (L3VNI 9999)
  **Leaf2**  
  ![](CommandResults/Pic4.png)  
 
-Leaf2# show bgp l2vpn evpn vrf VRF_MAIN
+                            Leaf2# show bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
 BGP table version is 5945, Local Router ID is 10.10.10.2
 Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
@@ -309,7 +311,7 @@ Route Distinguisher: 10.10.10.2:3    (L3VNI 9999)
  **Leaf3**  
  ![](CommandResults/Pic7.png)  
 
-Leaf3# show bgp l2vpn evpn vrf VRF_MAIN
+                            Leaf3# show bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
 BGP table version is 5551, Local Router ID is 10.10.10.3
 Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
