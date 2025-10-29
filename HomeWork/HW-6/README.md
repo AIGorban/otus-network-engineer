@@ -131,7 +131,7 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
  ![](CommandResults/Pic1.png)    
 
 
-Файл - Leaf1 -  [Здесь](CommandResults/Pic2.txt)
+Вывод команды - Leaf1 -  [Здесь](CommandResults/Pic2.txt)
 
                              Leaf1# sho bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
@@ -227,6 +227,9 @@ Route Distinguisher: 10.10.10.1:4    (L3VNI 9999)
  **Leaf2**  
  ![](CommandResults/Pic4.png)  
 
+
+Вывод команды - Leaf2 -  [Здесь](CommandResults/Pic5.txt)
+
                             Leaf2# show bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
 BGP table version is 5945, Local Router ID is 10.10.10.2
@@ -310,6 +313,8 @@ Route Distinguisher: 10.10.10.2:3    (L3VNI 9999)
  
  **Leaf3**  
  ![](CommandResults/Pic7.png)  
+
+Вывод команды - Leaf3 -  [Здесь](CommandResults/Pic8.txt)
 
                             Leaf3# show bgp l2vpn evpn vrf VRF_MAIN
 BGP routing table information for VRF default, address family L2VPN EVPN
