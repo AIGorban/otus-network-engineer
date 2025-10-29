@@ -41,7 +41,7 @@
 | ASN 65010             | ASN 65010             | ASN 65001             | ASN 65002             | ASN 65003             |
 
 
-**3. Конфигурация оборудования.(Конфигурация SPINE не менялась)**
+**3. Конфигурация оборудования (конфигурация SPINE не менялась).**
 
 Spine1 - [Здесь](Configs/Spine1.txt)
 
@@ -125,3 +125,17 @@ Leaf3 -  [Здесь](Configs/Leaf3.txt)
           84 bytes from 192.168.13.10 icmp_seq=4 ttl=62 time=12.593 ms
           84 bytes from 192.168.13.10 icmp_seq=5 ttl=62 time=12.121 ms
  
+ **4. Проверка на Leaf маршрутов VRF, L2VPN, L3VPN, MAC адресов**  
+
+ **Leaf1** 
+ ![](CommandResults/Pic1.png)
+ ![](CommandResults/Pic2.txt)
+ ![](CommandResults/Pic3.png) 
+ **Leaf2**  
+ ![](CommandResults/Pic4.png)
+ ![](CommandResults/Pic5.txt)
+ ![](CommandResults/Pic6.png)  
+ **Leaf1**  
+ ![](CommandResults/Pic7.png)
+ ![](CommandResults/Pic8.txt)
+ ![](CommandResults/Pic9.png)
