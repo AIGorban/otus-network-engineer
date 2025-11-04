@@ -512,3 +512,6 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
     172.16.0.2/31, ubest/mbest: 1/0
         *via 10.5.251.0, Eth1/1, [115/50], 12:05:22, isis-UNDERLAY, L1
 
+**3. ПРОВЕРКА НАСТРОЕК OVERLAY**    
+
+   **POD1 (Primary)**    
