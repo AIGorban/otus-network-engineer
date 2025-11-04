@@ -533,15 +533,14 @@ Leaf2-1
    **POD1 (Primary)**    
 
         Leaf1-2  
-
-        .  
+ 
         Leaf1-2# sho nve peers
         Interface Peer-IP          State LearnType Uptime   Router-Mac
         --------- ---------------  ----- --------- -------- -----------------
         nve1      10.255.50.102    Up    CP        06:47:15 5000.0006.0007
         nve1      10.255.50.105    Up    CP        05:44:13 5000.0009.0007
 
-
+.  
         Leaf1-2# show ip route vrf VTBL
         IP Route Table for VRF "VTBL"
         '*' denotes best ucast next-hop
@@ -582,6 +581,8 @@ Leaf2-1
         192.168.15.20/32, ubest/mbest: 1/0, attached
             *via 192.168.15.20, Vlan15, [190/0], 20:08:11, hmm
 
+.  
+
                 Leaf1-2# sho vpc
                 Legend:
                                 (*) - local vPC is down, forwarding via vPC peer-link
@@ -616,11 +617,7 @@ Leaf2-1
                 2     Po2           up     success     success               2,12,15
 
 
-
-
-        Please check "show vpc consistency-parameters vpc <vpc-num>" for the
-        consistency reason of down vpc and for type-2 consistency reasons for
-        any vpc.
+.  
 
         Leaf1-2# sho bgp vrf VTBL all
         BGP routing table information for VRF VTBL, address family IPv4 Unicast
@@ -640,7 +637,7 @@ Leaf2-1
         *>i192.168.15.10/32   10.255.50.102                     100          0 i
         * i                   10.255.50.102                     100          0 i
 
-        .  
+.  
 
         Leaf1-2# sho bgp l2vpn evpn
         BGP routing table information for VRF default, address family L2VPN EVPN
@@ -873,6 +870,7 @@ Leaf2-1
         x i                   10.255.50.105                     100          0 65010 i
         * i                   10.255.50.105                     100          0 65010 i
 
+Упрощенный вывод по хостам. 
 
         Leaf1-2# sho bgp l2vpn evpn | include 192.168.
         *>i[2]:[0]:[0]:[48]:[0050.7966.6812]:[32]:[192.168.2.10]/272
