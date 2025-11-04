@@ -1,0 +1,146 @@
+version 7.0(3)I7(4)
+hostname Spine2-2
+vdc Spine2-2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+nv overlay evpn
+feature ospf
+feature bgp
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature bfd
+feature nv overlay
+
+no password strength-check
+username admin password 5 $5$fLe09ZVS$O8347OyPB61ig59cwytJmHipop.zUiwkMgAqkem0Tk
+7  role network-admin
+ip domain-lookup
+system jumbomtu 8000
+copp profile strict
+snmp-server user admin network-admin auth md5 0x0f390250897c0dd71beba50619d4dcb7
+ priv 0x0f390250897c0dd71beba50619d4dcb7 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+route-map FilterRoutes permit 10
+route-map NH permit 10
+  set ip next-hop unchanged
+vrf context management
+
+
+interface Vlan1
+
+interface Ethernet1/1
+  description ++ To Leaf2-1 ++
+  no switchport
+  mtu 8000
+  no ip redirects
+  ip address 10.5.252.0/31
+  isis network point-to-point
+  isis circuit-type level-1-2
+  ip router isis UNDERLAY
+  no isis passive-interface level-1-2
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Leaf2-2 ++
+  no switchport
+  mtu 8000
+  no ip redirects
+  ip address 10.5.252.2/31
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis UNDERLAY
+  no isis passive-interface level-1-2
+  no shutdown
+
+interface Ethernet1/3
+
+interface Ethernet1/4
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+  description ++ To Spine2-2 M_POD ++
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 172.16.0.3/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.255.5.2/32
+  ip ospf network point-to-point
+  ip router ospf UNDERLAY area 0.0.0.0
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router ospf UNDERLAY
+  router-id 10.255.5.2
+  redistribute isis UNDERLAY route-map FilterRoutes
+  passive-interface default
+router isis UNDERLAY
+  net 49.0001.0000.0002.00
+  is-type level-1-2
+  redistribute ospf UNDERLAY route-map FilterRoutes
+  address-family ipv4 unicast
+  passive-interface default level-1-2
+router bgp 65010
+  router-id 10.255.5.2
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    network 10.255.5.2/32
+    maximum-paths 10
+  address-family l2vpn evpn
+    retain route-target all
+    advertise-pip
+  neighbor 10.255.21.1
+    remote-as 65010
+    description +Leaf2-1+
+    update-source loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-reflector-client
+  neighbor 10.255.21.2
+    remote-as 65010
+    description +Leaf2-2+
+    update-source loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-reflector-client
+  neighbor 172.16.0.2
+    remote-as 65020
+    description ++ Spine1-2 M_POD ++
+    address-family ipv4 unicast
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-map NH out

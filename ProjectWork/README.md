@@ -11,11 +11,30 @@
 
 **2. Конфигурация оборудования.**
 
+**POD1 Main**  
+
+Spine1-1 - [Здесь](Configs/Spine1-1.txt)
+
+Spine1-2 - [Здесь](Configs/Spine1-2.txt)
+
 Leaf1-1 -  [Здесь](Configs/Leaf1-1.txt)
 
 Leaf1-2 -  [Здесь](Configs/Leaf1-2.txt)
 
-VLS-SRV-1 - [Здесь](Configs/VLS-SRV-1.txt)
+Leaf1-3 -  [Здесь](Configs/Leaf1-3.txt)
+
+Leaf1-4 -  [Здесь](Configs/Leaf1-4.txt)
+
+**POD2 Reserve**  
+
+Spine2-1 - [Здесь](Configs/Spine2-1.txt)
+
+Spine2-2 - [Здесь](Configs/Spine2-2.txt)
+
+Leaf2-1 -  [Здесь](Configs/Leaf2-1.txt)
+
+Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
+
 
 **3. Вывод и ошибка vPC**  
 

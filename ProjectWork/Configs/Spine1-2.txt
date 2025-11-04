@@ -1,0 +1,157 @@
+version 7.0(3)I7(4)
+hostname Spine1-2
+vdc Spine1-2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+nv overlay evpn
+feature ospf
+feature bgp
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature bfd
+feature nv overlay
+
+no password strength-check
+username admin password 5 $5$FI03x2.4$d38Iaz1IJUWs99e44UtzdIKEGM3nE7RzLD9WKB7L6E
+A  role network-admin
+ip domain-lookup
+copp profile strict
+snmp-server user admin network-admin auth md5 0xf707ee4f38c933ba7fae6b493ca073a4
+ priv 0xf707ee4f38c933ba7fae6b493ca073a4 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+route-map NH permit 10
+  set ip next-hop unchanged
+vrf context management
+
+
+interface Vlan1
+
+interface Ethernet1/1
+  description ++ To Leaf1-1
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 10.0.252.0/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Leaf1-2
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 10.0.252.2/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Leaf1-3
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 10.0.252.4/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface Ethernet1/4
+  description ++ To Leaf1-4
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 10.0.252.6/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface Ethernet1/5
+  shutdown
+
+interface Ethernet1/6
+  description ++ To Spine2-2 R_POD ++
+  no switchport
+  mtu 9216
+  no ip redirects
+  ip address 172.16.0.2/31
+  ip ospf authentication message-digest
+  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
+  ip ospf network point-to-point
+  no ip ospf passive-interface
+  ip router ospf UNDERLAY area 0.0.0.0
+  ip ospf bfd
+  no shutdown
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.255.0.2/32
+  ip ospf network point-to-point
+  ip router ospf UNDERLAY area 0.0.0.0
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router ospf UNDERLAY
+  router-id 10.255.0.2
+  passive-interface default
+router bgp 65020
+  router-id 10.255.0.2
+  timers bgp 3 9
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    network 10.255.0.2/32
+    maximum-paths 10
+  address-family l2vpn evpn
+    retain route-target all
+    advertise-pip
+  neighbor 172.16.0.3
+    remote-as 65010
+    description ++ Spine2-2 R_POD ++
+    address-family ipv4 unicast
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-map NH out
+  neighbor 10.255.11.0/28
+    remote-as 65020
+    description ++ Leafs ++
+    update-source loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-reflector-client

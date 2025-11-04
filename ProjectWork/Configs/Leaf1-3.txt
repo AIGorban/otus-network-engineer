@@ -1,6 +1,6 @@
 version 7.0(3)I7(4)
-hostname Leaf1-1
-vdc Leaf1-1 id 1
+hostname Leaf1-3
+vdc Leaf1-3 id 1
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 511
@@ -22,13 +22,12 @@ feature bfd
 feature nv overlay
 
 no password strength-check
-username admin password 5 $5$WA9cXUXu$PGWxWQ7BkgEVdREBXF3RbTKdmHRKtwGrYTpFTcJtIj
-A  role network-admin
+username admin password 5 $5$rzkGk/qi$t.nGL4Vs2TRVc7Vbf7SUl9pEgOZKzXY2qi9tixAiWP
+9  role network-admin
 ip domain-lookup
-spanning-tree mode mst
 copp profile strict
-snmp-server user admin network-admin auth md5 0xc994ec9b6e932274627fc84790d27d2a
- priv 0xc994ec9b6e932274627fc84790d27d2a localizedkey
+snmp-server user admin network-admin auth md5 0xfef0b5a271d07de40028939631c9e427
+ priv 0xfef0b5a271d07de40028939631c9e427 localizedkey
 rmon event 1 description FATAL(1) owner PMON@FATAL
 rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
 rmon event 3 description ERROR(3) owner PMON@ERROR
@@ -63,7 +62,7 @@ vrf context vPC-keepalive
 vpc domain 1
   peer-switch
   role priority 10
-  peer-keepalive destination 192.168.0.10 source 192.168.0.9 vrf vPC-keepalive
+  peer-keepalive destination 192.168.0.14 source 192.168.0.13 vrf vPC-keepalive
   peer-gateway
   layer3 peer-router
   ip arp synchronize
@@ -136,7 +135,7 @@ interface Ethernet1/1
   no switchport
   mtu 9216
   no ip redirects
-  ip address 10.0.251.1/31
+  ip address 10.0.251.5/31
   ip ospf authentication message-digest
   ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
   ip ospf network point-to-point
@@ -150,7 +149,7 @@ interface Ethernet1/2
   no switchport
   mtu 9216
   no ip redirects
-  ip address 10.0.252.1/31
+  ip address 10.0.252.5/31
   ip ospf authentication message-digest
   ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
   ip ospf network point-to-point
@@ -166,6 +165,7 @@ interface Ethernet1/3
 
 interface Ethernet1/4
   description ++ vPC peerlink ++
+  shutdown
   switchport mode trunk
   channel-group 100 mode active
 
@@ -174,7 +174,7 @@ interface Ethernet1/5
   no switchport
   mtu 8000
   vrf member vPC-keepalive
-  ip address 192.168.0.9/30
+  ip address 192.168.0.13/30
   no shutdown
 
 interface Ethernet1/6
@@ -188,29 +188,29 @@ interface mgmt0
 
 interface loopback0
   description ++ For IGP ++
-  ip address 10.255.11.1/32
+  ip address 10.255.11.3/32
   ip ospf network point-to-point
   ip router ospf UNDERLAY area 0.0.0.0
 
 interface loopback5
   description ++ For NVE ++
-  ip address 10.255.5.101/32
-  ip address 10.255.50.101/32 secondary
+  ip address 10.255.5.103/32
+  ip address 10.255.50.102/32 secondary
   ip ospf network point-to-point
   ip router ospf UNDERLAY area 0.0.0.0
 line console
 line vty
 boot nxos bootflash:/nxos.7.0.3.I7.4.bin
 router ospf UNDERLAY
-  router-id 10.255.11.1
+  router-id 10.255.11.3
   passive-interface default
 router bgp 65020
-  router-id 10.255.11.1
+  router-id 10.255.11.3
   timers bgp 3 9
   reconnect-interval 12
   log-neighbor-changes
   address-family ipv4 unicast
-    network 10.255.11.1/32
+    network 10.255.11.3/32
     maximum-paths 10
   address-family l2vpn evpn
     retain route-target all

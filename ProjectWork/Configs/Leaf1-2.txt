@@ -1,4 +1,13 @@
-Leaf1-2#
+version 7.0(3)I7(4)
+hostname Leaf1-2
+vdc Leaf1-2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
 
 cfs eth distribute
 nv overlay evpn
@@ -11,6 +20,20 @@ feature lacp
 feature vpc
 feature bfd
 feature nv overlay
+
+no password strength-check
+username admin password 5 $5$BPNuITgf$69KSIg6zgSTs2amgiTyICn1dkvo6VwRivGhFBi.7PA
+7  role network-admin
+ip domain-lookup
+spanning-tree mode mst
+copp profile strict
+snmp-server user admin network-admin auth md5 0xf3d8af550d6341645e39f7f903c7ea1d
+ priv 0xf3d8af550d6341645e39f7f903c7ea1d localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
 
 fabric forwarding anycast-gateway-mac 0005.0005.0005
 vlan 1-2,12,15,99
@@ -50,6 +73,7 @@ interface Vlan1
   no ipv6 redirects
 
 interface Vlan2
+  description ++ VL_Servers ++
   no shutdown
   vrf member VTBL
   no ip redirects
@@ -57,7 +81,26 @@ interface Vlan2
   no ipv6 redirects
   fabric forwarding mode anycast-gateway
 
+interface Vlan12
+  description ++ VMConsole ++
+  no shutdown
+  vrf member VTBL
+  no ip redirects
+  ip address 192.168.12.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan15
+  description ++ FBG_Servers ++
+  no shutdown
+  vrf member VTBL
+  no ip redirects
+  ip address 192.168.15.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
 interface Vlan99
+  description ++ For L3VPN ++
   no shutdown
   mtu 8000
   vrf member VTBL
@@ -67,10 +110,11 @@ interface Vlan99
 
 interface port-channel2
   switchport mode trunk
+  switchport trunk allowed vlan 2,12,15
   vpc 2
 
 interface port-channel100
-  description **vPC peelink**
+  description ++ vPC peelink ++
   switchport mode trunk
   spanning-tree port type network
   vpc peer-link
@@ -78,7 +122,7 @@ interface port-channel100
 interface nve1
   no shutdown
   host-reachability protocol bgp
-  source-interface loopback0
+  source-interface loopback5
   member vni 9999 associate-vrf
   member vni 10002
     ingress-replication protocol bgp
@@ -116,32 +160,42 @@ interface Ethernet1/2
   no shutdown
 
 interface Ethernet1/3
-  description **vPC peerlink**
+  description ++ vPC peerlink ++
   switchport mode trunk
   channel-group 100 mode active
 
 interface Ethernet1/4
-  description **vPC peerlink**
+  description ++ vPC peerlink ++
   switchport mode trunk
   channel-group 100 mode active
 
 interface Ethernet1/5
-  description **vPC keepalive**
+  description ++ vPC keepalive ++
   no switchport
+  mtu 8000
   vrf member vPC-keepalive
   ip address 192.168.0.10/30
   no shutdown
 
 interface Ethernet1/6
+  description ++ Clients ++
   switchport mode trunk
-  spanning-tree guard root
+  switchport trunk allowed vlan 2,12,15
   channel-group 2 mode active
 
 interface mgmt0
   vrf member management
 
 interface loopback0
+  description ++ For IGP ++
   ip address 10.255.11.2/32
+  ip ospf network point-to-point
+  ip router ospf UNDERLAY area 0.0.0.0
+
+interface loopback5
+  description ++ For NVE ++
+  ip address 10.255.5.102/32
+  ip address 10.255.50.101/32 secondary
   ip ospf network point-to-point
   ip router ospf UNDERLAY area 0.0.0.0
 line console
@@ -161,24 +215,21 @@ router bgp 65020
   address-family l2vpn evpn
     retain route-target all
     advertise-pip
+  template peer SPINE
+    update-source loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    address-family l2vpn evpn
+      send-community
+      send-community extended
   neighbor 10.255.0.1
+    inherit peer SPINE
     remote-as 65020
     description ++ Spine1-1 ++
-    update-source loopback0
-    address-family ipv4 unicast
-      next-hop-self
-    address-family l2vpn evpn
-      send-community
-      send-community extended
   neighbor 10.255.0.2
+    inherit peer SPINE
     remote-as 65020
     description ++ Spine1-2 ++
-    update-source loopback0
-    address-family ipv4 unicast
-      next-hop-self
-    address-family l2vpn evpn
-      send-community
-      send-community extended
   vrf VTBL
     address-family ipv4 unicast
       advertise l2vpn evpn

@@ -1,6 +1,6 @@
 version 7.0(3)I7(4)
-hostname Leaf1-1
-vdc Leaf1-1 id 1
+hostname Leaf2-1
+vdc Leaf2-1 id 1
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 511
@@ -22,13 +22,14 @@ feature bfd
 feature nv overlay
 
 no password strength-check
-username admin password 5 $5$WA9cXUXu$PGWxWQ7BkgEVdREBXF3RbTKdmHRKtwGrYTpFTcJtIj
-A  role network-admin
+username admin password 5 $5$HNWtQLel$YMaZfL/6XyWFBc4Pb02ZuSrjYUPXqLUIVZ.H7p7sal
+D  role network-admin
 ip domain-lookup
 spanning-tree mode mst
+system jumbomtu 8000
 copp profile strict
-snmp-server user admin network-admin auth md5 0xc994ec9b6e932274627fc84790d27d2a
- priv 0xc994ec9b6e932274627fc84790d27d2a localizedkey
+snmp-server user admin network-admin auth md5 0x042b0bc6c258a24d03177aac989d9663
+ priv 0x042b0bc6c258a24d03177aac989d9663 localizedkey
 rmon event 1 description FATAL(1) owner PMON@FATAL
 rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
 rmon event 3 description ERROR(3) owner PMON@ERROR
@@ -63,7 +64,7 @@ vrf context vPC-keepalive
 vpc domain 1
   peer-switch
   role priority 10
-  peer-keepalive destination 192.168.0.10 source 192.168.0.9 vrf vPC-keepalive
+  peer-keepalive destination 192.168.0.18 source 192.168.0.17 vrf vPC-keepalive
   peer-gateway
   layer3 peer-router
   ip arp synchronize
@@ -132,31 +133,27 @@ interface nve1
     ingress-replication protocol bgp
 
 interface Ethernet1/1
-  description ++ To Spine1-1
+  description ++ To Spine2-1 ++
   no switchport
-  mtu 9216
+  mtu 8000
   no ip redirects
-  ip address 10.0.251.1/31
-  ip ospf authentication message-digest
-  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
-  ip ospf network point-to-point
-  no ip ospf passive-interface
-  ip router ospf UNDERLAY area 0.0.0.0
-  ip ospf bfd
+  ip address 10.5.251.1/31
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis UNDERLAY
+  no isis passive-interface level-1
   no shutdown
 
 interface Ethernet1/2
-  description ++ To Spine1-2
+  description ++ To Spine2-2 ++
   no switchport
-  mtu 9216
+  mtu 8000
   no ip redirects
-  ip address 10.0.252.1/31
-  ip ospf authentication message-digest
-  ip ospf message-digest-key 150 md5 3 e7cddfe7d0564e2c
-  ip ospf network point-to-point
-  no ip ospf passive-interface
-  ip router ospf UNDERLAY area 0.0.0.0
-  ip ospf bfd
+  ip address 10.5.252.1/31
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis UNDERLAY
+  no isis passive-interface level-1
   no shutdown
 
 interface Ethernet1/3
@@ -174,7 +171,7 @@ interface Ethernet1/5
   no switchport
   mtu 8000
   vrf member vPC-keepalive
-  ip address 192.168.0.9/30
+  ip address 192.168.0.17/30
   no shutdown
 
 interface Ethernet1/6
@@ -188,48 +185,54 @@ interface mgmt0
 
 interface loopback0
   description ++ For IGP ++
-  ip address 10.255.11.1/32
-  ip ospf network point-to-point
-  ip router ospf UNDERLAY area 0.0.0.0
+  ip address 10.255.21.1/32
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis UNDERLAY
 
 interface loopback5
   description ++ For NVE ++
-  ip address 10.255.5.101/32
-  ip address 10.255.50.101/32 secondary
-  ip ospf network point-to-point
-  ip router ospf UNDERLAY area 0.0.0.0
+  ip address 10.255.5.105/32
+  ip address 10.255.50.105/32 secondary
+  isis network point-to-point
+  isis circuit-type level-1
+  ip router isis UNDERLAY
 line console
 line vty
 boot nxos bootflash:/nxos.7.0.3.I7.4.bin
-router ospf UNDERLAY
-  router-id 10.255.11.1
-  passive-interface default
-router bgp 65020
-  router-id 10.255.11.1
-  timers bgp 3 9
+router isis UNDERLAY
+  net 49.0001.0000.0011.00
+  is-type level-1
+  address-family ipv4 unicast
+  passive-interface default level-1
+router bgp 65010
+  router-id 10.255.21.1
   reconnect-interval 12
   log-neighbor-changes
   address-family ipv4 unicast
-    network 10.255.11.1/32
+    network 10.255.21.1/32
     maximum-paths 10
   address-family l2vpn evpn
     retain route-target all
     advertise-pip
-  template peer SPINE
+  neighbor 10.255.5.1
+    remote-as 65010
+    description ++ Spine2-1 ++
     update-source loopback0
     address-family ipv4 unicast
       next-hop-self
     address-family l2vpn evpn
       send-community
       send-community extended
-  neighbor 10.255.0.1
-    inherit peer SPINE
-    remote-as 65020
-    description ++ Spine1-1 ++
-  neighbor 10.255.0.2
-    inherit peer SPINE
-    remote-as 65020
-    description ++ Spine1-2 ++
+  neighbor 10.255.5.2
+    remote-as 65010
+    description ++ Spine2-2 ++
+    update-source loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    address-family l2vpn evpn
+      send-community
+      send-community extended
   vrf VTBL
     address-family ipv4 unicast
       advertise l2vpn evpn
