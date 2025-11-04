@@ -91,6 +91,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
 
    **POD1 (Primary)**  
 
+Spine1-1  
           Spine1-1# sho ip ospf neighbors  
           OSPF Process ID UNDERLAY VRF default  
           Total number of neighbors: 5  
@@ -101,6 +102,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
           10.255.11.4       1 FULL/ -          11:19:39 10.0.251.7      Eth1/4
           10.255.5.1        1 FULL/ -          11:19:41 172.16.0.1      Eth1/6
 
+Leaf1-3  
           Leaf1-3# sho ip ospf neighbors  
           OSPF Process ID UNDERLAY VRF default  
           Total number of neighbors: 2  
@@ -109,6 +111,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
           10.255.0.2        1 FULL/ -          07:29:58 10.0.252.4      Eth1/2  
 
 .
+Spine1-1  
 
     Spine1-1# sho ip route
     IP Route Table for VRF "default"
@@ -218,6 +221,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
         *via 10.0.251.5, Eth1/3, [110/120], 07:27:14, ospf-UNDERLAY, intra
         *via 10.0.251.7, Eth1/4, [110/120], 07:27:14, ospf-UNDERLAY, intra
 
+Leaf1-3  
 
     Leaf1-3# sho ip route
     IP Route Table for VRF "default"
@@ -309,6 +313,8 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
 
    **POD2 (Secondary)** 
     
+Spine2-2
+
     Spine2-2# sho isis database
     IS-IS Process: UNDERLAY LSP database VRF: default
     IS-IS Level-1 Link State Database
@@ -322,6 +328,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
     LSPID                 Seq Number   Checksum  Lifetime   A/P/O/T
     Spine2-2.00-00      * 0x00000148   0x6675    1025       0/0/0/3
 
+Leaf2-1  
 
     Leaf2-1# sho isis database
     IS-IS Process: UNDERLAY LSP database VRF: default
@@ -336,6 +343,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
       LSPID                 Seq Number   Checksum  Lifetime   A/P/O/T
 
 .  
+Spine2-2  
 
     Spine2-2# sho ip route
     IP Route Table for VRF "default"
@@ -419,6 +427,8 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
         *via 172.16.0.3, Eth1/6, [0/0], 1d18h, direct
     172.16.0.3/32, ubest/mbest: 1/0, attached
         *via 172.16.0.3, Eth1/6, [0/0], 1d18h, local  
+
+Leaf2-1  
 
     Leaf2-1# sho ip route
     IP Route Table for VRF "default"
