@@ -103,8 +103,8 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
           Neighbor ID     Pri State            Up Time  Address         Interface
           10.255.0.1        1 FULL/ -          07:30:01 10.0.251.4      Eth1/1
           10.255.0.2        1 FULL/ -          07:29:58 10.0.252.4      Eth1/2  
-          
- 
+
+. 
     Spine1-1# sho ip route
     IP Route Table for VRF "default"
     '*' denotes best ucast next-hop
