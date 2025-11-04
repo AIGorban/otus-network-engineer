@@ -73,7 +73,7 @@
 
 **POD1 (Primary)**  
 
-Spine1-1 - [Здесь](Configs/Spine1-1.txt)  
+Spine1-1 - [Здесь](Configs/Spine1-1.txt)    
 Spine1-2 - [Здесь](Configs/Spine1-2.txt)  
 Leaf1-1 -  [Здесь](Configs/Leaf1-1.txt)  
 Leaf1-2 -  [Здесь](Configs/Leaf1-2.txt)  
@@ -92,6 +92,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
    **POD1 (Primary)**  
 
 Spine1-1  
+
           Spine1-1# sho ip ospf neighbors  
           OSPF Process ID UNDERLAY VRF default  
           Total number of neighbors: 5  
@@ -103,6 +104,7 @@ Spine1-1
           10.255.5.1        1 FULL/ -          11:19:41 172.16.0.1      Eth1/6
 
 Leaf1-3  
+
           Leaf1-3# sho ip ospf neighbors  
           OSPF Process ID UNDERLAY VRF default  
           Total number of neighbors: 2  
