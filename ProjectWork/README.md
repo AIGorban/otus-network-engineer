@@ -104,7 +104,8 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
           10.255.0.1        1 FULL/ -          07:30:01 10.0.251.4      Eth1/1
           10.255.0.2        1 FULL/ -          07:29:58 10.0.252.4      Eth1/2  
 
-. 
+.
+
     Spine1-1# sho ip route
     IP Route Table for VRF "default"
     '*' denotes best ucast next-hop
@@ -212,3 +213,93 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
         *via 10.0.251.3, Eth1/2, [110/120], 07:27:14, ospf-UNDERLAY, intra
         *via 10.0.251.5, Eth1/3, [110/120], 07:27:14, ospf-UNDERLAY, intra
         *via 10.0.251.7, Eth1/4, [110/120], 07:27:14, ospf-UNDERLAY, intra
+
+
+        Leaf1-3# sho ip route
+    IP Route Table for VRF "default"
+    '*' denotes best ucast next-hop
+    '**' denotes best mcast next-hop
+    '[x/y]' denotes [preference/metric]
+    '%<string>' in via output denotes VRF <string>
+
+    10.0.251.0/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.0.251.2/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.0.251.4/31, ubest/mbest: 1/0, attached
+        *via 10.0.251.5, Eth1/1, [0/0], 07:28:20, direct
+    10.0.251.5/32, ubest/mbest: 1/0, attached
+        *via 10.0.251.5, Eth1/1, [0/0], 07:28:20, local
+    10.0.251.6/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.0.252.0/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.0.252.2/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.0.252.4/31, ubest/mbest: 1/0, attached
+        *via 10.0.252.5, Eth1/2, [0/0], 07:28:20, direct
+    10.0.252.5/32, ubest/mbest: 1/0, attached
+        *via 10.0.252.5, Eth1/2, [0/0], 07:28:20, local
+    10.0.252.6/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    10.5.251.0/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.5.251.2/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.5.252.0/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.5.252.2/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.255.0.1/32, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/41], 07:28:07, ospf-UNDERLAY, intra
+    10.255.0.2/32, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/41], 07:28:07, ospf-UNDERLAY, intra
+    10.255.5.1/32, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.5.2/32, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.5.101/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.5.102/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.5.103/32, ubest/mbest: 2/0, attached
+        *via 10.255.5.103, Lo5, [0/0], 05:35:47, local
+        *via 10.255.5.103, Lo5, [0/0], 05:35:47, direct
+    10.255.5.104/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 05:35:47, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 05:35:47, ospf-UNDERLAY, intra
+    10.255.5.105/32, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/20], 03:47:07, ospf-UNDERLAY, type-2
+    10.255.5.106/32, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/20], 03:56:18, ospf-UNDERLAY, type-2
+    10.255.11.1/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.11.2/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.11.3/32, ubest/mbest: 2/0, attached
+        *via 10.255.11.3, Lo0, [0/0], 06:21:48, local
+        *via 10.255.11.3, Lo0, [0/0], 06:21:48, direct
+    10.255.11.4/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 05:41:46, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 05:41:46, ospf-UNDERLAY, intra
+    10.255.21.1/32, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.255.21.2/32, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/20], 07:28:07, ospf-UNDERLAY, type-2
+    10.255.50.101/32, ubest/mbest: 2/0
+        *via 10.0.251.4, Eth1/1, [110/81], 07:28:07, ospf-UNDERLAY, intra
+        *via 10.0.252.4, Eth1/2, [110/81], 07:28:07, ospf-UNDERLAY, intra
+    10.255.50.102/32, ubest/mbest: 2/0, attached
+        *via 10.255.50.102, Lo5, [0/0], 05:35:47, local
+        *via 10.255.50.102, Lo5, [0/0], 05:35:47, direct
+    10.255.50.105/32, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/20], 03:56:18, ospf-UNDERLAY, type-2
+    172.16.0.0/31, ubest/mbest: 1/0
+        *via 10.0.251.4, Eth1/1, [110/80], 07:28:07, ospf-UNDERLAY, intra
+    172.16.0.2/31, ubest/mbest: 1/0
+        *via 10.0.252.4, Eth1/2, [110/80], 07:28:07, ospf-UNDERLAY, intra
+
