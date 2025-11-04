@@ -85,10 +85,11 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
 
 **3. ПРОВЕРКА НАСТРОЕК**  
 
-   **POD1 (Main) - UNDERLAY** 
-          Spine1-1# sho ip ospf neighbors
-          OSPF Process ID UNDERLAY VRF default
-          Total number of neighbors: 5
+   **POD1 (Main) - UNDERLAY**  
+
+          Spine1-1# sho ip ospf neighbors  
+          OSPF Process ID UNDERLAY VRF default  
+          Total number of neighbors: 5  
           Neighbor ID     Pri State            Up Time  Address         Interface
           10.255.11.1       1 FULL/ -          11:19:39 10.0.251.1      Eth1/1
           10.255.11.2       1 FULL/ -          11:19:40 10.0.251.3      Eth1/2
@@ -96,9 +97,9 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
           10.255.11.4       1 FULL/ -          11:19:39 10.0.251.7      Eth1/4
           10.255.5.1        1 FULL/ -          11:19:41 172.16.0.1      Eth1/6
 
-          Leaf1-3# sho ip ospf neighbors
-          OSPF Process ID UNDERLAY VRF default
-          Total number of neighbors: 2
+          Leaf1-3# sho ip ospf neighbors  
+          OSPF Process ID UNDERLAY VRF default  
+          Total number of neighbors: 2  
           Neighbor ID     Pri State            Up Time  Address         Interface
           10.255.0.1        1 FULL/ -          07:30:01 10.0.251.4      Eth1/1
           10.255.0.2        1 FULL/ -          07:29:58 10.0.252.4      Eth1/2
