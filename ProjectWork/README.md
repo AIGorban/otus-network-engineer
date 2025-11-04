@@ -215,7 +215,7 @@ Leaf2-2 -  [Здесь](Configs/Leaf2-2.txt)
         *via 10.0.251.7, Eth1/4, [110/120], 07:27:14, ospf-UNDERLAY, intra
 
 
-        Leaf1-3# sho ip route
+    Leaf1-3# sho ip route
     IP Route Table for VRF "default"
     '*' denotes best ucast next-hop
     '**' denotes best mcast next-hop
