@@ -7,7 +7,7 @@
 
    ***ПРИМЕНЕННЫЕ ТЕХНОЛОГИИ:*** VxLAN, L2VPN, L3VPN, vPC.
 
-***Презентация проекта*** -  ***[Здесь]***(Presentation/Presentation.pptx) 
+***Презентация проекта*** -  ***[Здесь](Presentation/Presentation.pptx)*** 
 
 
    **1. СХЕМА СЕТИ**
