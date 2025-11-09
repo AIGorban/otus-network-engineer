@@ -574,4 +574,20 @@ VPC 2
 VPC 4    
  ![](CommandResults/VPC4.png) 
 
+**6. Проверка отказоусточивости**
+
+Гасим Eth1/6 на LEAF1  
+
+ ![](CommandResults/Pic1.png) 
+
+ Проверяем vPC на LEAF1 и LEAF 2  
+
+  ![](CommandResults/Pic2.png)  
+
+  ![](CommandResults/Pic3.png)  
+
+Проверяем доступность хостов c VPC4 через LEAF2
+
+ ![](CommandResults/VPC4_Success.png) 
+
 
