@@ -1,0 +1,170 @@
+version 7.0(3)I7(4)
+hostname Leaf3
+vdc Leaf3 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+nv overlay evpn
+feature ospf
+feature bgp
+feature pim
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature bfd
+feature nv overlay
+
+no password strength-check
+username admin password 5 $5$RshmfL6N$wo5wKBPrNy9lI82ctWe7JZQnLtZmUT0aMnW2Axut6U
+D  role network-admin
+ip domain-lookup
+copp profile strict
+bfd echo-interface loopback0
+snmp-server user admin network-admin auth md5 0xfef0b5a271d07de40028939631c9e427
+ priv 0xfef0b5a271d07de40028939631c9e427 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+fabric forwarding anycast-gateway-mac 0005.0005.0005
+vlan 1,11-13,99
+vlan 11
+  name VPC_VLAN_11
+  vn-segment 10011
+vlan 12
+  name VPC_VLAN_12
+  vn-segment 10012
+vlan 13
+  name VPC_VLAN_13
+  vn-segment 10013
+vlan 99
+  name VxLAN_MAINSTREAM
+  vn-segment 9999
+
+vrf context VRF_MAIN
+  vni 9999
+  rd auto
+  address-family ipv4 unicast
+    route-target import 99:9999
+    route-target import 99:9999 evpn
+    route-target export 99:9999
+    route-target export 99:9999 evpn
+vrf context management
+
+interface Vlan1
+
+interface Vlan11
+  no shutdown
+  vrf member VRF_MAIN
+  no ip redirects
+  ip address 192.168.11.1/28
+  fabric forwarding mode anycast-gateway
+
+interface Vlan13
+  no shutdown
+  vrf member VRF_MAIN
+  no ip redirects
+  ip address 192.168.13.1/28
+  fabric forwarding mode anycast-gateway
+
+interface Vlan99
+  no shutdown
+  mtu 9216
+  vrf member VRF_MAIN
+  no ip redirects
+  ip forward
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  source-interface loopback105
+  member vni 9999 associate-vrf
+  member vni 10011
+    ingress-replication protocol bgp
+  member vni 10012
+    ingress-replication protocol bgp
+  member vni 10013
+    ingress-replication protocol bgp
+
+interface Ethernet1/1
+  description ++ To Spine1 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.1.10/30
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Spine2 ++
+  no switchport
+  mtu 9216
+  ip address 10.10.2.10/30
+  no shutdown
+
+interface Ethernet1/3
+  description ++ To Client3 ++
+  switchport access vlan 11
+
+interface Ethernet1/4
+  description ++ To Client4 ++
+  switchport access vlan 13
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.10.10.3/32
+
+interface loopback105
+  description ++ For NVE ++
+  ip address 10.10.105.3/32
+  ip address 10.10.200.3/32 secondary
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router bgp 65003
+  router-id 10.10.10.3
+  timers bgp 3 9
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.10.10.3/32
+    network 10.10.105.3/32
+    network 10.10.200.3/32
+    maximum-paths 10
+  template peer SPINE
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+  neighbor 10.10.1.9
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  neighbor 10.10.2.9
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  vrf VRF_MAIN
+    address-family ipv4 unicast
+      advertise l2vpn evpn
+      maximum-paths 10
+evpn
+  vni 10011 l2
+    rd auto
+    route-target import 11:10011
+    route-target export 11:10011
+  vni 10012 l2
+    rd auto
+    route-target import 12:10012
+    route-target export 12:10012
+  vni 10013 l2
+    rd auto
+    route-target import 13:10013
+    route-target export 13:10013

@@ -1,0 +1,206 @@
+version 7.0(3)I7(4)
+hostname Leaf2
+vdc Leaf2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+cfs eth distribute
+nv overlay evpn
+feature ospf
+feature bgp
+feature pim
+feature isis
+feature interface-vlan
+feature vn-segment-vlan-based
+feature lacp
+feature vpc
+feature bfd
+feature nv overlay
+
+no password strength-check
+username admin password 5 $5$wWQg8ph3$EkD3IIysDQF4cYZtSWeb23mmfIuBhLfAj7GVwYr92N
+1  role network-admin
+ip domain-lookup
+copp profile strict
+snmp-server user admin network-admin auth md5 0xf3d8af550d6341645e39f7f903c7ea1d
+ priv 0xf3d8af550d6341645e39f7f903c7ea1d localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+fabric forwarding anycast-gateway-mac 0005.0005.0005
+vlan 1,11-12,99
+vlan 11
+  name VPC_VLAN_11
+  vn-segment 10011
+vlan 12
+  name VPC_VLAN_12
+  vn-segment 10012
+vlan 99
+  name VxLAN_MAINSTREAM
+  vn-segment 9999
+
+vrf context VRF_MAIN
+  vni 9999
+  rd auto
+  address-family ipv4 unicast
+    route-target import 99:9999
+    route-target import 99:9999 evpn
+    route-target export 99:9999
+    route-target export 99:9999 evpn
+vrf context management
+vrf context vPC-keepalive
+vpc domain 1
+  peer-switch
+  role priority 10
+  peer-keepalive destination 192.168.0.1 source 192.168.0.2 vrf vPC-keepalive
+  peer-gateway
+  layer3 peer-router
+  ip arp synchronize
+
+interface Vlan1
+  no ip redirects
+  no ipv6 redirects
+
+interface Vlan11
+  no shutdown
+  vrf member VRF_MAIN
+  no ip redirects
+  ip address 192.168.11.1/28
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan12
+  no shutdown
+  vrf member VRF_MAIN
+  no ip redirects
+  ip address 192.168.12.1/28
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan99
+  no shutdown
+  mtu 9216
+  vrf member VRF_MAIN
+  no ip redirects
+  ip forward
+  no ipv6 redirects
+
+interface port-channel100
+  description ++ vPC peelink ++
+  switchport mode trunk
+  spanning-tree port type network
+  vpc peer-link
+
+interface port-channel150
+  switchport mode trunk
+  switchport trunk allowed vlan 11-12
+  vpc 150
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  source-interface loopback105
+  member vni 9999 associate-vrf
+  member vni 10011
+    ingress-replication protocol bgp
+  member vni 10012
+    ingress-replication protocol bgp
+
+interface Ethernet1/1
+  description ++ To Spine1 ++
+  no switchport
+  no ip redirects
+  ip address 10.10.1.6/30
+  no shutdown
+
+interface Ethernet1/2
+  description ++ To Spine2 ++
+  no switchport
+  ip address 10.10.2.6/30
+  no shutdown
+
+interface Ethernet1/3
+  description ++ vPC peerlink ++
+  switchport mode trunk
+  channel-group 100 mode active
+
+interface Ethernet1/4
+  description ++ vPC peerlink ++
+  switchport mode trunk
+  channel-group 100 mode active
+
+interface Ethernet1/5
+  description ++ vPC keepalive ++
+  no switchport
+  mtu 9216
+  vrf member vPC-keepalive
+  ip address 192.168.0.2/30
+  no shutdown
+
+interface Ethernet1/6
+  description ++ Clients ++
+  switchport mode trunk
+  switchport trunk allowed vlan 11-12
+  channel-group 150 mode active
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.10.10.2/32
+
+interface loopback105
+  description ++ For NVE ++
+  ip address 10.10.105.2/32
+  ip address 10.10.200.1/32 secondary
+line console
+line vty
+boot nxos bootflash:/nxos.7.0.3.I7.4.bin
+router bgp 65002
+  router-id 10.10.10.2
+  timers bgp 3 9
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.10.10.2/32
+    network 10.10.105.2/32
+    network 10.10.200.1/32
+    maximum-paths 10
+  template peer SPINE
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+  neighbor 10.10.1.5
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  neighbor 10.10.2.5
+    no bfd
+    inherit peer SPINE
+    remote-as 65010
+    address-family ipv4 unicast
+  vrf VRF_MAIN
+    address-family ipv4 unicast
+      advertise l2vpn evpn
+      maximum-paths 10
+evpn
+  vni 10011 l2
+    rd auto
+    route-target import 11:10011
+    route-target export 11:10011
+  vni 10012 l2
+    rd auto
+    route-target import 12:10012
+    route-target export 12:10012
+  vni 10013 l2
+    rd auto
+    route-target import 13:10013
+    route-target export 13:10013
