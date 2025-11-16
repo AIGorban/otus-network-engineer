@@ -1,0 +1,37 @@
+
+R1# sho ip route
+IP Route Table for VRF "default"
+'*' denotes best ucast next-hop
+'**' denotes best mcast next-hop
+'[x/y]' denotes [preference/metric]
+'%<string>' in via output denotes VRF <string>
+
+0.0.0.0/0, ubest/mbest: 1/0
+    *via Null0, [1/0], 1d02h, static
+10.0.177.0/29, ubest/mbest: 1/0, attached
+    *via 10.0.177.6, Vlan177, [0/0], 01:28:50, direct
+10.0.177.6/32, ubest/mbest: 1/0, attached
+    *via 10.0.177.6, Vlan177, [0/0], 01:28:50, local
+10.0.199.0/29, ubest/mbest: 1/0, attached
+    *via 10.0.199.6, Vlan199, [0/0], 01:28:35, direct
+10.0.199.6/32, ubest/mbest: 1/0, attached
+    *via 10.0.199.6, Vlan199, [0/0], 01:28:35, local
+10.7.7.7/32, ubest/mbest: 2/0, attached
+    *via 10.7.7.7, Lo0, [0/0], 1d02h, local
+    *via 10.7.7.7, Lo0, [0/0], 1d02h, direct
+192.168.11.0/28, ubest/mbest: 1/0
+    *via 10.0.177.3, [20/0], 01:23:59, bgp-65000, external, tag 65003
+192.168.11.5/32, ubest/mbest: 1/0
+    *via 10.0.177.3, [1/0], 01:25:44, static
+192.168.11.10/32, ubest/mbest: 1/0
+    *via 10.0.177.3, [20/0], 01:23:59, bgp-65000, external, tag 65003
+192.168.12.0/28, ubest/mbest: 1/0
+    *via 10.0.199.3, [20/0], 01:23:50, bgp-65000, external, tag 65003
+192.168.12.5/32, ubest/mbest: 1/0
+    *via 10.0.199.3, [1/0], 01:25:54, static
+192.168.12.10/32, ubest/mbest: 1/0
+    *via 10.0.199.3, [20/0], 01:23:50, bgp-65000, external, tag 65003
+
+R1#
+R1#
+R1#

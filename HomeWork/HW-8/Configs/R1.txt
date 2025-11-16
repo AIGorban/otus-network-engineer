@@ -1,0 +1,100 @@
+version 7.0(3)I7(4)
+hostname R1
+vdc R1 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 248 maximum 248
+  limit-resource u6route-mem minimum 96 maximum 96
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature bgp
+feature interface-vlan
+
+no password strength-check
+username admin password 5 $5$MFUainmS$flb5k3m4y3VmGogZeVwFyOWzO/tW1Atgytw2TVQGxX
+8  role network-admin
+ip domain-lookup
+copp profile strict
+snmp-server user admin network-admin auth md5 0x401a3b5005afbacc065ad5507e046d95
+ priv 0x401a3b5005afbacc065ad5507e046d95 localizedkey
+rmon event 1 description FATAL(1) owner PMON@FATAL
+rmon event 2 description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 description ERROR(3) owner PMON@ERROR
+rmon event 4 description WARNING(4) owner PMON@WARNING
+rmon event 5 description INFORMATION(5) owner PMON@INFO
+
+ip route 0.0.0.0/0 Null0
+ip route 192.168.11.5/32 10.0.177.3
+ip route 192.168.12.5/32 10.0.199.3
+vlan 1,177,199
+vlan 177
+  name Interconnect77
+vlan 199
+  name Interconnect99
+
+route-map PERMIT permit 10
+vrf context management
+
+
+interface Vlan1
+
+interface Vlan177
+  description ++ To Switch_77 ++
+  no shutdown
+  mtu 9216
+  no ip redirects
+  ip address 10.0.177.6/29
+
+interface Vlan199
+  description ++ To Switch_99 ++
+  no shutdown
+  mtu 9216
+  no ip redirects
+  ip address 10.0.199.6/29
+
+interface Ethernet1/1
+  description ++ Trunk to Leaf_3 ++
+  switchport mode trunk
+  switchport trunk allowed vlan 177,199
+
+interface mgmt0
+  vrf member management
+
+interface loopback0
+  ip address 10.7.7.7/32
+line console
+line vty
+router bgp 65000
+  router-id 10.7.7.7
+  timers bgp 3 9
+  reconnect-interval 12
+  address-family ipv4 unicast
+    network 10.0.177.6/32
+    network 10.0.199.6/32
+    network 10.7.7.7/32
+    redistribute direct route-map PERMIT
+    redistribute static route-map PERMIT
+    maximum-paths 10
+  neighbor 10.0.177.1
+    remote-as 65001
+    address-family ipv4 unicast
+      send-community
+      send-community extended
+  neighbor 10.0.177.3
+    remote-as 65003
+    address-family ipv4 unicast
+      send-community
+      send-community extended
+  neighbor 10.0.199.1
+    remote-as 65001
+    address-family ipv4 unicast
+      send-community
+      send-community extended
+  neighbor 10.0.199.3
+    remote-as 65003
+    address-family ipv4 unicast
+      send-community
+      send-community extended
+
