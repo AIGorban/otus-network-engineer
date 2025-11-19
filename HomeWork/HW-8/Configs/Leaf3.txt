@@ -34,8 +34,6 @@ rmon event 4 description WARNING(4) owner PMON@WARNING
 rmon event 5 description INFORMATION(5) owner PMON@INFO
 
 fabric forwarding anycast-gateway-mac 0005.0005.0005
-ip route 0.0.0.0/0 10.7.7.7 vrf INSIDE_AA
-ip route 0.0.0.0/0 10.7.7.7 vrf VRF_MAIN
 vlan 1,11-12,77,99,177,199
 vlan 11
   name VPC_VLAN_11
@@ -54,7 +52,8 @@ vlan 177
 vlan 199
   name Interconnect99
 
-ip prefix-list VxLAN_4 seq 5 permit 0.0.0.0/0 le 31
+route-map NO-EXPORT permit 10
+  set community no-export
 route-map PERMIT permit 10
 vrf context INSIDE_AA
   vni 7777
@@ -183,8 +182,6 @@ router bgp 65003
     network 10.10.10.3/32
     network 10.10.105.3/32
     network 10.10.200.3/32
-    network 192.168.11.0/28
-    network 192.168.12.0/28
     maximum-paths 10
   address-family l2vpn evpn
   template peer SPINE
@@ -232,4 +229,3 @@ evpn
     rd auto
     route-target import 12:10012
     route-target export 12:10012
-

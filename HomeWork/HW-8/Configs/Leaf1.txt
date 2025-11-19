@@ -48,7 +48,7 @@ vlan 77
   name INSIDE_AA
   vn-segment 7777
 vlan 99
-  name VxLAN_MAINSTREAM
+  name INSIDE_CC
   vn-segment 9999
 
 route-map PERMIT permit 10
@@ -113,24 +113,6 @@ interface Vlan99
   vrf member VRF_MAIN
   no ip redirects
   ip forward
-  no ipv6 redirects
-
-interface Vlan177
-  description ++ To Router_77 ++
-  no shutdown
-  mtu 9216
-  vrf member INSIDE_AA
-  no ip redirects
-  ip address 10.0.177.1/29
-  no ipv6 redirects
-
-interface Vlan199
-  description ++ To Router_99 ++
-  no shutdown
-  mtu 9216
-  vrf member VRF_MAIN
-  no ip redirects
-  ip address 10.0.199.1/29
   no ipv6 redirects
 
 interface port-channel100
@@ -241,23 +223,11 @@ router bgp 65001
       advertise l2vpn evpn
       redistribute direct route-map PERMIT
       maximum-paths 10
-    neighbor 10.0.177.6
-      remote-as 65000
-      address-family ipv4 unicast
-        send-community
-        send-community extended
-        route-map PERMIT out
   vrf VRF_MAIN
     address-family ipv4 unicast
       advertise l2vpn evpn
       redistribute direct route-map PERMIT
       maximum-paths 10
-    neighbor 10.0.199.6
-      remote-as 65000
-      address-family ipv4 unicast
-        send-community
-        send-community extended
-        route-map PERMIT out
 evpn
   vni 10011 l2
     rd auto
@@ -267,5 +237,3 @@ evpn
     rd auto
     route-target import 12:10012
     route-target export 12:10012
-
-

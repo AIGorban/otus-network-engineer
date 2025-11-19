@@ -36,17 +36,28 @@ rmon event 4 description WARNING(4) owner PMON@WARNING
 rmon event 5 description INFORMATION(5) owner PMON@INFO
 
 fabric forwarding anycast-gateway-mac 0005.0005.0005
-vlan 1,11-12,99
+vlan 1,11-12,77,99
 vlan 11
   name VPC_VLAN_11
   vn-segment 10011
 vlan 12
   name VPC_VLAN_12
   vn-segment 10012
+vlan 77
+  name INSIDE_AA
+  vn-segment 7777
 vlan 99
   name VxLAN_MAINSTREAM
   vn-segment 9999
 
+vrf context INSIDE_AA
+  vni 7777
+  rd auto
+  address-family ipv4 unicast
+    route-target import 77:7777
+    route-target import 77:7777 evpn
+    route-target export 77:7777
+    route-target export 77:7777 evpn
 vrf context VRF_MAIN
   vni 9999
   rd auto
@@ -71,7 +82,7 @@ interface Vlan1
 
 interface Vlan11
   no shutdown
-  vrf member VRF_MAIN
+  vrf member INSIDE_AA
   no ip redirects
   ip address 192.168.11.1/28
   no ipv6 redirects
@@ -84,6 +95,14 @@ interface Vlan12
   ip address 192.168.12.1/28
   no ipv6 redirects
   fabric forwarding mode anycast-gateway
+
+interface Vlan77
+  no shutdown
+  mtu 9216
+  vrf member INSIDE_AA
+  no ip redirects
+  ip forward
+  no ipv6 redirects
 
 interface Vlan99
   no shutdown
@@ -108,6 +127,7 @@ interface nve1
   no shutdown
   host-reachability protocol bgp
   source-interface loopback105
+  member vni 7777 associate-vrf
   member vni 9999 associate-vrf
   member vni 10011
     ingress-replication protocol bgp
@@ -187,6 +207,10 @@ router bgp 65002
     inherit peer SPINE
     remote-as 65010
     address-family ipv4 unicast
+  vrf INSIDE_AA
+    address-family ipv4 unicast
+      advertise l2vpn evpn
+      maximum-paths 10
   vrf VRF_MAIN
     address-family ipv4 unicast
       advertise l2vpn evpn
@@ -200,7 +224,3 @@ evpn
     rd auto
     route-target import 12:10012
     route-target export 12:10012
-  vni 10013 l2
-    rd auto
-    route-target import 13:10013
-    route-target export 13:10013

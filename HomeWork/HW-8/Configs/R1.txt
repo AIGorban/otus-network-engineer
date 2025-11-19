@@ -26,8 +26,6 @@ rmon event 4 description WARNING(4) owner PMON@WARNING
 rmon event 5 description INFORMATION(5) owner PMON@INFO
 
 ip route 0.0.0.0/0 Null0
-ip route 192.168.11.5/32 10.0.177.3
-ip route 192.168.12.5/32 10.0.199.3
 vlan 1,177,199
 vlan 177
   name Interconnect77
@@ -71,30 +69,17 @@ router bgp 65000
   timers bgp 3 9
   reconnect-interval 12
   address-family ipv4 unicast
-    network 10.0.177.6/32
-    network 10.0.199.6/32
     network 10.7.7.7/32
-    redistribute direct route-map PERMIT
-    redistribute static route-map PERMIT
     maximum-paths 10
-  neighbor 10.0.177.1
-    remote-as 65001
-    address-family ipv4 unicast
-      send-community
-      send-community extended
   neighbor 10.0.177.3
     remote-as 65003
     address-family ipv4 unicast
       send-community
       send-community extended
-  neighbor 10.0.199.1
-    remote-as 65001
-    address-family ipv4 unicast
-      send-community
-      send-community extended
+      default-originate
   neighbor 10.0.199.3
     remote-as 65003
     address-family ipv4 unicast
       send-community
       send-community extended
-
+      default-originate
